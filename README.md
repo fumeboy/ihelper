@@ -22,7 +22,7 @@
 
 编译得到的 app 文件放置在 `/Library/Input Methods` 目录
 
-字典文件放置在 `~/.ihelper.csv`
+字典文件放置在 `~/.ihelper.csv` （第一次使用可以复制本仓库的 `.ihelper.csv`）
 
 ### 字典格式
 
