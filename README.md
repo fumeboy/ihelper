@@ -2,7 +2,7 @@
 
 输入助手；用于辅助记忆命令、快捷键等信息
 
-![screenshot](./blob/main/README/1.png)
+![screenshot](https://github.com/fumeboy/ihelper/blob/main/README/1.png)
 
 ## 功能简介
 
