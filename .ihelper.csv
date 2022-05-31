@@ -1,0 +1,12 @@
+vim;q;,屏幕『向下』移动一页,,ctrl+f
+vim;q;,屏幕『向上』移动一页,,ctrl+b
+vim;q;,屏幕『向下』移动半页,,ctrl+d
+vim;q;,屏幕『向上』移动半页,,ctrl+u
+vim;cursor;,光标移动到非空格符的下一行,+,
+vim;cursor;,光标移动到非空格符的上一行,-,
+vim;cursor;,光标移动到这个屏幕的最上方那一行的第一个字符,H,
+vim;cursor;,光标移动到这个屏幕的中央那一行的第一个字符,M,
+vim;cursor;,光标移动到这个屏幕的最下方那一行的第一个字符,L,
+vim;cursor;,移动到这个档案的最后一行,G,
+vim;cursor;,移动到这个档案的第一行,gg,
+q;,test,,cmd+f
