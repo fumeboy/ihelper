@@ -3,64 +3,71 @@ import SwiftUI
 let w :CGFloat = 400
 let color1 = Color(red:255,green:255,blue:255,opacity:0.9)
 let color2 = Color(red:255,green:255,blue:255,opacity:0.7)
-let itemHeight: CGFloat = 30
+let itemselectedbg = Color.purple.opacity(0.3)
+let itemHeight: CGFloat = 34
 
 struct Tags: View {
     var tag: String
-    var c: Color
     var body: some View {
+        let c = Color(red:194/255,green:194/255,blue:240/255)
         HStack(spacing:1){
             Text("@")
                 .foregroundColor(c).bold().opacity(0.8)
             ForEach(tag.split(separator: ";"), id: \.self) { t in
                 Text(t)
-                    .foregroundColor(c).bold()
+                    .foregroundColor(c)
                 Text(";")
                     .foregroundColor(c).bold().opacity(0.6)
             }
-        }.fixedSize(horizontal: true, vertical: false)
+        }.fixedSize(horizontal: true, vertical: false).padding(2).padding(.leading,3).background(Color(red:63/255,green:62/255,blue:61/255,opacity: 0.6))
     }
 }
 
 struct TruncableItem: View {
     let candidate: Candidate
+    let ifselected: Bool
     
     @State private var intrinsicSize: CGSize = .zero
     @State private var truncatedSize: CGSize = .zero
     @State private var isTruncated: Bool = false
     var body: some View {
-        let c = candidate.iftext ? Color.orange : Color.red.opacity(0.9)
-        
-        if isTruncated {
-            ScrollView{
-                VStack(alignment: .leading, spacing: 5) {
-                    Text(candidate.desc).fixedSize(horizontal: false, vertical: true)
-                    Tags(tag: candidate.tag,c: c)
-                    Text(candidate.output)
+        let bg  = ifselected ? itemselectedbg : Color.clear
+        Group{
+            if isTruncated && ifselected {
+                ScrollView{
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(candidate.desc).foregroundColor(color1).fixedSize(horizontal: false, vertical: true)
+                        Tags(tag: candidate.tag)
+                        Text(candidate.output).foregroundColor(color2)
+                            .font(.system(size: CGFloat(15)))
+                    }.frame(width:w-20, alignment: .leading)
                 }
+                .padding(5)
+                .padding(.leading,5)
+                .padding(.trailing,5)
+                .frame(width:w, alignment: .leading)
+                .fixedSize()
+            }else{
+                HStack(alignment:.firstTextBaseline){
+                    Text("\(candidate.desc)")
+                        .foregroundColor(color1)
+                        .frame(maxWidth: w, alignment: .leading)
+                    Tags(tag: candidate.tag)
+                    Text(candidate.output)
+                        .foregroundColor(Color.gray)
+                }
+                .padding(5)
+                .padding(.leading,5)
+                .padding(.trailing,5)
+                .fixedSize(horizontal: true, vertical: false)
+                .frame(height:itemHeight, alignment: .center)
+                .readSize { size in
+                    isTruncated = (CGFloat(size.width) > w)
+                }
+                
             }
-            .padding(5)
-            .frame(width:w, alignment: .leading)
-            .frame(maxHeight:300)
-            .fixedSize()
-            .foregroundColor(color1)
-            .font(.system(size: CGFloat(15)))
-        }else{
-            HStack(alignment:.firstTextBaseline){
-                Text("\(candidate.desc)")
-                    .foregroundColor(color1)
-                    .frame(maxWidth: w, alignment: .leading)
-                Tags(tag: candidate.tag, c: c)
-                Text(candidate.output)
-                    .foregroundColor(Color.gray)
-            }
-            .padding(5)
-            .fixedSize(horizontal: true, vertical: false)
-            .frame(height:itemHeight, alignment: .center)
-            .readSize { size in
-                isTruncated = (CGFloat(size.width) > w)
-            }
-        }
+        }.frame(width: w, alignment: .leading).background(bg)
+            .font(.system(size: CGFloat(16)))
     }
 }
 
@@ -74,10 +81,11 @@ struct ContentView: View {
     
     var body: some View {
         let inputbg = -1 == selectedI
-        ? Color.purple.opacity(0.5)
-        : Color.purple.opacity(0.25)
+        ? itemselectedbg
+        : Color(red:55/255,green: 53/255,blue: 54/255)
+        
         return HStack(alignment:.top, spacing:20){
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 20) {
                 if error.count > 0  {
                     Text(error).foregroundColor(Color.white).font(.system(size: CGFloat(20)))
                         .padding(.top, 3)
@@ -89,48 +97,44 @@ struct ContentView: View {
                 }else{
                     // header
                     HStack(alignment:.center){
-                        Text(">  " + (selectedI > -1 ? candidates[selectedI].output : origin)).foregroundColor(color1).minimumScaleFactor(0.9).frame(maxWidth:w, alignment: .leading)
+                        Text(">  " + (selectedI > -1 ? candidates[selectedI].output : origin)).foregroundColor(color1).frame(maxWidth:w-24-20, alignment: .leading)
                             .fixedSize(horizontal: true, vertical: false)
                         Spacer()
                         Text("\(curPage)").foregroundColor(Color.gray)
                     }.font(.system(size: CGFloat(20)))
                         .padding(.top, 3)
-                        .padding(.bottom, 3)
-                        .padding(.leading, 10)
-                        .padding(.trailing, 10)
+                        .padding(.bottom, 5)
+                        .padding(.leading, 12)
+                        .padding(.trailing, 12)
+                        .frame(width:w-20, alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: false)
                         .background(inputbg)
-                        .frame(width:w, height:itemHeight, alignment: .leading)
+                        .cornerRadius(6)
+                        .padding(10)
+                        .padding(.top,3)
+                        .padding(.bottom,-20)
+                        
+                    
                     // plane
                     HStack(alignment:.top){
                         // list
                         VStack(alignment: .leading, spacing: 0) {
                             ForEach(Array(candidates.enumerated()), id: \.element.id) { (index, candidate) in
-                                let c = candidate.iftext ? Color.orange : Color.red.opacity(0.9)
-
-                                if selectedI == index {
-                                    TruncableItem(candidate: candidate)
-                                        .frame(width: w, alignment: .leading)
-                                        .background(Color.purple.opacity(0.5))
-                                        .font(.system(size: CGFloat(16)))
-                                }else{
-                                    HStack(alignment:.firstTextBaseline){
-                                        Text("\(candidate.desc)")
-                                            .foregroundColor(color1)
-                                            .frame(maxWidth: w,alignment: .leading).fixedSize()
-                                        Tags(tag: candidate.tag, c: c)
-                                        Text(candidate.output).foregroundColor(Color.gray)
-                                    }
-                                    .padding(5)
-                                    .frame(width: w, height: itemHeight,alignment: .leading)
-                                    .font(.system(size: CGFloat(16)))
-                                }
+                                
+                                TruncableItem(candidate: candidate, ifselected: selectedI == index)
+                                
                             }
                         }
                     }
                 }}
+            .padding(.bottom,5)
             .frame(width:w, alignment: .leading)
-            .background(Color.black)
-            .cornerRadius(2,antialiased: true)
+            .cornerRadius(6)
+            .background(Color(red:37/255,green:36/255,blue:34/255))
+            .padding(6)
+            .cornerRadius(6)
+            .border(Color.gray.opacity(0.3),width:6)
+            .cornerRadius(6)
         }
     }
 }
@@ -148,7 +152,7 @@ struct ContentView_Previews: PreviewProvider {
             Candidate(tag: "vim;", desc: "shift+V 进入可视化", output: "" , iftext: true,id:7),
             Candidate(tag: "vim;", desc: "shift+V 进入可视化", output: "12345678912345678911111" , iftext: true,id:8),
             Candidate(tag: "vim;", desc: "shift+V 进入可视化可视化可视化可", output: "12345678" , iftext: true,id:9),
-        ], origin:"vim", selectedI:1,error: "")
+        ], origin:"vim1234567891234567891111112345678912345678911111", selectedI:-1,error: "")
     }
 }
 
@@ -195,7 +199,7 @@ class CandidatesWindow: NSWindow, NSWindowDelegate {
         level = NSWindow.Level(rawValue: NSWindow.Level.RawValue(CGShieldingWindowLevel()))
         styleMask = .init(arrayLiteral: .fullSizeContentView, .borderless)
         isReleasedWhenClosed = false
-        backgroundColor = NSColor.clear
+        backgroundColor = .clear
         delegate = self
         
         // 窗口大小可根据内容变化

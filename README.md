@@ -4,6 +4,8 @@
 
 ![screenshot](https://github.com/fumeboy/ihelper/blob/main/README/1.png)
 
+![screenshot](https://github.com/fumeboy/ihelper/blob/main/README/2.png)
+
 ## 功能简介
 
 用户可以自定义字典在 CSV 文件 `~/.ihelper.csv`；字典行记录 .tag、.desc、.text、.hotkey 四项

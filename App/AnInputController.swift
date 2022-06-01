@@ -185,6 +185,7 @@ class AnInputController: IMKInputController {
         "9": UInt16(kVK_ANSI_9),
         // Arithmetic operators
         "+": UInt16(kVK_ANSI_KeypadPlus),
+        "plus": UInt16(kVK_ANSI_KeypadPlus),
         "-": UInt16(kVK_ANSI_Minus),
         "*": UInt16(kVK_ANSI_KeypadMultiply),
         "=": UInt16(kVK_ANSI_Equal),

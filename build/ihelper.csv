@@ -9,4 +9,4 @@ vim;cursor;,光标移动到这个屏幕的中央那一行的第一个字符,M,
 vim;cursor;,光标移动到这个屏幕的最下方那一行的第一个字符,L,
 vim;cursor;,移动到这个档案的最后一行,G,
 vim;cursor;,移动到这个档案的第一行,gg,
-q;,test,,cmd+f
+mac;,显示隐藏文件,,cmd+shift+.
