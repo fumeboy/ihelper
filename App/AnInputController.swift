@@ -7,8 +7,10 @@ extension String: LocalizedError {
 
 class AnInputController: IMKInputController {
     private var _candidates: [Candidate] = []
+    private var _candidatesNow: [Candidate] = []
     private var _hasNext: Bool = false
     private var _selector: Int = -1
+    private var ifbanned: Bool = false
     private var err: String = "" {
         didSet{
             if self.err.count == 0 {
@@ -43,13 +45,12 @@ class AnInputController: IMKInputController {
         let endi = curPage*configCandidateNum
         _hasNext = _candidates.count > endi
         
-        let showitems =  _candidates.count > starti ?
+        _candidatesNow =  Array(_candidates.count > starti ?
         _hasNext ? _candidates[starti..<endi] : _candidates[starti..<_candidates.count]
         :
-        []
-        pageItemNum = showitems.count
+        [])
         CandidatesWindow.shared.setCandidates(
-            Array(showitems),
+            _candidatesNow,
             curPage: curPage,
             hasNext: _hasNext,
             originalString: _originalString,
@@ -83,7 +84,7 @@ class AnInputController: IMKInputController {
                 return true
             }
             if event.keyCode == kVK_DownArrow {
-                if _selector < pageItemNum-1 {
+                if _selector < _candidatesNow.count-1 {
                     _selector += 1
                     CandidatesWindow.shared.setSelector(i: _selector)
                 }
@@ -104,9 +105,24 @@ class AnInputController: IMKInputController {
         return nil
     }
     
-    private func cleanHandler(event: NSEvent) -> Bool? {
-        if event.keyCode == kVK_Escape && _originalString.count > 0 {
-            clean()
+    private func escHandler(event: NSEvent) -> Bool? {
+        if event.keyCode == kVK_Escape  {
+            ctrl_press_times+=1
+            if _originalString.count > 0 {
+                clean()
+            }else{
+                if ctrl_press_times >= 2 {
+                    ifbanned = false
+                    toast.show("control mode")
+                }else{
+                    ifbanned = !ifbanned
+                    if ifbanned {
+                        toast.show("banning mode")
+                    }else{
+                        toast.show("normal mode")
+                    }
+                }
+            }
             return true
         }
         return nil
@@ -229,15 +245,18 @@ class AnInputController: IMKInputController {
             if _selector == -1 {
                 client()?.insertText(NSAttributedString(string: _originalString), replacementRange: replacementRange())
                 clean()
+                ifbanned = true
+                toast.show("banning mode")
+                
                 if event.keyCode == kVK_Tab || event.keyCode == kVK_Space {
                     return false
                 }
             }else{
-                if _candidates[_selector].iftext {
-                    client()?.insertText(NSAttributedString(string: _candidates[_selector].output), replacementRange: replacementRange())
+                if _candidatesNow[_selector].iftext {
+                    client()?.insertText(NSAttributedString(string: _candidatesNow[_selector].output), replacementRange: replacementRange())
                     clean()
                 }else{
-                    let keys: [String] = _candidates[_selector].output.components(separatedBy: "+")
+                    let keys: [String] = _candidatesNow[_selector].output.components(separatedBy: "+")
                     let press = keys.last!
                     var flags: UInt64 = 0
                     for k in keys.dropLast() {
@@ -264,7 +283,7 @@ class AnInputController: IMKInputController {
                         down?.post(tap: CGEventTapLocation.cghidEventTap);
                         up?.post(tap: CGEventTapLocation.cghidEventTap);
                     }else{
-                        throw "bad expression of hotkey (at the last key): " + _candidates[_selector].output
+                        throw "bad expression of hotkey (at the last key): " + _candidatesNow[_selector].output
                     }
                 }
             }
@@ -278,6 +297,9 @@ class AnInputController: IMKInputController {
         if err.count > 0 {
             err = ""
             return true
+        }
+        if let r = escHandler(event: event) {
+            return r
         }
         if ctrl_press_times >= 2 { // press ESC twice to open control mode
             ctrl_press_times = 0
@@ -311,30 +333,26 @@ class AnInputController: IMKInputController {
                 return false
             }
         }
-        
-        for handler in [
-            arrowKeyHandler,
-            insertHandler,
-            cleanHandler,
-            deleteHandler,
-            inputHandler,
-        ] {
-            do {
-                let r = try handler(event)
-                if  r != nil{
-                    ctrl_press_times = 0
-                    return r!
+        ctrl_press_times = 0
+        if !ifbanned {
+            for handler in [
+                arrowKeyHandler,
+                insertHandler,
+                deleteHandler,
+                inputHandler,
+            ] {
+                do {
+                    let r = try handler(event)
+                    if  r != nil{
+                        return r!
+                    }
+                }catch{
+                    err = error.localizedDescription
+                    return true
                 }
-            }catch{
-                err = error.localizedDescription
-                return true
             }
         }
         
-        if event.keyCode == kVK_Escape {
-            ctrl_press_times+=1
-            return true
-        }
         return false
     }
     
@@ -350,6 +368,8 @@ class AnInputController: IMKInputController {
     func clean() {
         _originalString = ""
     }
+    
+    let toast = ToastWindow()
     
     override func deactivateServer(_ sender: Any!) {
         clean()
