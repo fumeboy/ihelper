@@ -4,24 +4,10 @@ let w :CGFloat = 400
 let color1 = Color(red:255,green:255,blue:255,opacity:0.9)
 let color2 = Color(red:255,green:255,blue:255,opacity:0.7)
 let itemselectedbg = Color.purple.opacity(0.3)
+let tagtextcolor = Color(red:194/255,green:194/255,blue:240/255)
 let itemHeight: CGFloat = 34
-
-struct Tags: View {
-    var tag: String
-    var body: some View {
-        let c = Color(red:194/255,green:194/255,blue:240/255)
-        HStack(spacing:1){
-            Text("@")
-                .foregroundColor(c).bold().opacity(0.8)
-            ForEach(tag.split(separator: ";"), id: \.self) { t in
-                Text(t)
-                    .foregroundColor(c)
-                Text(";")
-                    .foregroundColor(c).bold().opacity(0.6)
-            }
-        }.fixedSize(horizontal: true, vertical: false).padding(2).padding(.leading,3).background(Color(red:63/255,green:62/255,blue:61/255,opacity: 0.6))
-    }
-}
+let horizontalmargin: CGFloat = 10
+let itemIftextIconWidth: CGFloat = 30
 
 struct TruncableItem: View {
     let candidate: Candidate
@@ -37,37 +23,47 @@ struct TruncableItem: View {
                 ScrollView{
                     VStack(alignment: .leading, spacing: 5) {
                         Text(candidate.desc).foregroundColor(color1).fixedSize(horizontal: false, vertical: true)
-                        Tags(tag: candidate.tag)
-                        Text(candidate.output).foregroundColor(color2)
-                            .font(.system(size: CGFloat(15)))
-                    }.frame(width:w-20, alignment: .leading)
+                        Text(candidate.tag).foregroundColor(tagtextcolor)
+                        Text(candidate.output).foregroundColor(color2).font(.system(size: CGFloat(15)))
+                    }.frame(maxWidth:w-horizontalmargin*2, alignment: .leading)
                 }
                 .padding(5)
                 .padding(.leading,5)
                 .padding(.trailing,5)
-                .frame(width:w, alignment: .leading)
+                .frame(width:w-horizontalmargin*2, alignment: .leading)
                 .fixedSize()
             }else{
-                HStack(alignment:.firstTextBaseline){
-                    Text("\(candidate.desc)")
-                        .foregroundColor(color1)
-                        .frame(maxWidth: w, alignment: .leading)
-                    Tags(tag: candidate.tag)
-                    Text(candidate.output)
-                        .foregroundColor(Color.gray)
+                HStack(alignment:.center,spacing: 0){
+                    HStack(alignment:.firstTextBaseline){
+                        Text("\(candidate.desc)")
+                            .foregroundColor(color1)
+                            .frame(maxWidth: w - itemIftextIconWidth - horizontalmargin*2 - 1, alignment: .leading)
+                            .fixedSize()
+                        
+                        Text(":: "+candidate.tag).foregroundColor(tagtextcolor)
+                            .padding(2).padding(.leading,3).padding(.trailing,3)
+                            .background(Color(red:63/255,green:62/255,blue:61/255,opacity: 0.9))
+                        
+                        Text(candidate.output).foregroundColor(Color.gray)
+                    }
+                    .readSize { size in
+                        isTruncated = (CGFloat(size.width) > w-horizontalmargin*2-itemIftextIconWidth)
+                    }
+                    .frame(width: w - itemIftextIconWidth - horizontalmargin*2, alignment: .leading)
+                    .clipped()
+                    
+                    Text(candidate.iftext ? "↩︎" : "⌘").foregroundColor(Color.white.opacity(0.5)).frame(width:itemIftextIconWidth)
                 }
                 .padding(5)
                 .padding(.leading,5)
                 .padding(.trailing,5)
                 .fixedSize(horizontal: true, vertical: false)
-                .frame(height:itemHeight, alignment: .center)
-                .readSize { size in
-                    isTruncated = (CGFloat(size.width) > w)
-                }
-                
+                .frame(width:w, height:itemHeight, alignment: .leading)
             }
-        }.frame(width: w, alignment: .leading).background(bg)
-            .font(.system(size: CGFloat(16)))
+        }
+        .frame(width: w, alignment: .leading)
+        .background(bg)
+        .font(.system(size: CGFloat(16)))
     }
 }
 
@@ -80,25 +76,22 @@ struct ContentView: View {
     var error = ""
     
     var body: some View {
-        let inputbg = -1 == selectedI
+        let headerbg = -1 == selectedI
         ? itemselectedbg
         : Color(red:55/255,green: 53/255,blue: 54/255)
         
         return HStack(alignment:.top, spacing:20){
             VStack(alignment: .leading, spacing: 20) {
                 if error.count > 0  {
-                    Text(error).foregroundColor(Color.white).font(.system(size: CGFloat(20)))
+                    Text("error :: " + error).foregroundColor(Color.white).font(.system(size: CGFloat(20)))
                         .padding(.top, 3)
                         .padding(.bottom, 3)
                         .padding(.leading, 10)
-                        .padding(.trailing, 10)
                         .frame(width:w, alignment: .leading)
-                        .background(Color.red)
                 }else{
                     // header
                     HStack(alignment:.center){
-                        Text(">  " + (selectedI > -1 ? candidates[selectedI].output : origin)).foregroundColor(color1).frame(maxWidth:w-24-20, alignment: .leading)
-                            .fixedSize(horizontal: true, vertical: false)
+                        Text(">  " + (selectedI > -1 ? candidates[selectedI].output : origin)).foregroundColor(color1).frame(maxWidth:w-24-20, alignment: .leading).fixedSize(horizontal: true, vertical: false)
                         Spacer()
                         Text("\(curPage)").foregroundColor(Color.gray)
                     }.font(.system(size: CGFloat(20)))
@@ -108,12 +101,12 @@ struct ContentView: View {
                         .padding(.trailing, 12)
                         .frame(width:w-20, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: false)
-                        .background(inputbg)
+                        .background(headerbg)
                         .cornerRadius(6)
                         .padding(10)
                         .padding(.top,3)
                         .padding(.bottom,-20)
-                        
+                    
                     
                     // plane
                     HStack(alignment:.top){
@@ -149,10 +142,10 @@ struct ContentView_Previews: PreviewProvider {
             Candidate(tag: "vim;", desc: "shift+V 进入可视化", output: "" , iftext: false,id:3),
             Candidate(tag: "vim;", desc: "shift+V 进入可视化", output: "" , iftext: true,id:5),
             Candidate(tag: "vim;", desc: "shift+V 进入可视化", output: "" , iftext: true,id:6),
-            Candidate(tag: "vim;", desc: "shift+V 进入可视化", output: "" , iftext: true,id:7),
+            Candidate(tag: "vim;vim;vim;vim;vim;vim;vivim;vim;vim;vim;vim;vim;vim;vim;vim;", desc: "shift+V 进入可视化", output: "" , iftext: true,id:7),
             Candidate(tag: "vim;", desc: "shift+V 进入可视化", output: "12345678912345678911111" , iftext: true,id:8),
             Candidate(tag: "vim;", desc: "shift+V 进入可视化可视化可视化可", output: "12345678" , iftext: true,id:9),
-        ], origin:"vim1234567891234567891111112345678912345678911111", selectedI:-1,error: "")
+        ], origin:"vim1234567891234567891111112345678912345678911111", selectedI:7,error: "")
     }
 }
 
