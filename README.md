@@ -1,3 +1,9 @@
+# 然而我背叛了我自己
+
+我决定给 raycast（一个类似于 Alfred 的软件） 写插件来实现之前开发输入法所实现的功能。这个项目后面可能不再更新。
+
+插件已经写好在这里 https://github.com/fumeboy/ihelper-raycast
+
 # ihelper
 
 效率工具；辅助记忆；快速输入；
