@@ -26,7 +26,8 @@ class Tests: XCTestCase {
         guard let spans = parseCSVline(#"a,v,c,","""""",d""#) else {throw ""}
         guard spans.2 == #",""",d"# else {throw spans.2}
         
-        print(parseCSVline("显示隐藏文件显示隐藏文件显示隐藏文件显示隐藏文件,显示隐藏文件显示隐藏文件显示隐藏文件显示隐藏文件,显示隐藏文件显示隐藏文件显示隐藏文件显示隐藏文件,"))
+        print(parseCSVline(""))
+    
     }
     
 }

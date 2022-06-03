@@ -2,21 +2,23 @@
 
 效率工具；辅助记忆；快速输入；
 
+![screenshot](https://github.com/fumeboy/ihelper/blob/main/README/3.png)
+
 ![screenshot](https://github.com/fumeboy/ihelper/blob/main/README/1.png)
 
 ![screenshot](https://github.com/fumeboy/ihelper/blob/main/README/2.png)
 
 ## 功能简介
 
-用户可以自定义字典在 CSV 文件 `~/.ihelper.csv`；字典行记录 .tag、.desc、.text、.hotkey 四项
+用户可以自定义字典在 CSV 文件 `~/.ihelper.csv`；字典行记录 .tag、.desc、.output、.output-type 四项
 
-启用 ihelper 输入法，输入能匹配 .tag 的文本查找出匹配的字典行；使用方向键选择要输出一项；敲回车键输出选中的字典行的 .text 或执行 .hotkey
+启用 ihelper 输入法，输入能匹配 .tag 的文本查找出匹配的字典行；使用方向键选择要输出一项；敲回车键输出 output 文本或执行对应的 hotkey
 
 ## 场景举例
 
 比如因为我不熟悉 vim 的操作，于是配置了 `vim;cursor;,光标移动到非空格符的下一行,+,` 这一行到字典文件
 
-使用时，首先启用输入法并输入 `v` 匹配到 .tag `vim`, 然后选择该行并回车，输入法将输出 .text `+`, vim 窗口接收到 `+`, 执行 “光标移动到非空格符的下一行”
+使用时，首先启用输入法并输入 `v` 匹配到 .tag `vim`, 然后选择该行并回车，输入法将输出 .output `+`, vim 窗口接收到 `+`, 执行 “光标移动到非空格符的下一行”
 
 ## 使用细节
 
@@ -30,7 +32,7 @@
 
 ### 字典格式
 
-每一行为一个字典项，按顺序依次是 tag、desc、text、hotkey 四列；
+每一行为一个字典项，按顺序依次是 tag、desc、output、output-type 四列；
 
 #### tag
 
@@ -40,13 +42,11 @@ tag 作为索引项使用，允许多值，按照符号 ; 分割
 
 描述该字典行的 text 或 hotkey；无格式要求
 
-#### text
+#### output
 
-要输出的文本；当有 hotkey 时，text 列的值被忽略
+当 output-type == 1 时，输出 output 原文本
 
-#### hotkey
-
-输出时，`ctrl+C` 这样的 hotkey 会被执行
+当 output-type == 2 时，`ctrl+C` 这样的 hotkey 会被执行
 
 hotkey 格式为 `<with>+<key>` 或 `<key>`
 

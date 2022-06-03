@@ -89,8 +89,8 @@ func parseCSVline(_ l: String) -> (String,String,String,Bool)?{
     if spans[1].count == 0 {
         return nil
     }
-    if spans[3].count > 0 {
-        return ((spans[0],spans[1],spans[3],false))
+    if spans[3] == "2" {
+        return ((spans[0],spans[1],spans[2],false))
     } else {
         return ((spans[0],spans[1],spans[2],true))
     }
