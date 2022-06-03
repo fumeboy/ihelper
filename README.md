@@ -10,8 +10,6 @@
 
 ![screenshot](https://github.com/fumeboy/ihelper/blob/main/README/3.png)
 
-![screenshot](https://github.com/fumeboy/ihelper/blob/main/README/1.png)
-
 ![screenshot](https://github.com/fumeboy/ihelper/blob/main/README/2.png)
 
 ## 功能简介
