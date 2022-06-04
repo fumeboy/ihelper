@@ -1,12 +1,156 @@
-vim;q;,屏幕『向下』移动一页,,ctrl+f
-vim;q;,屏幕『向上』移动一页,,ctrl+b
-vim;q;,屏幕『向下』移动半页,,ctrl+d
-vim;q;,屏幕『向上』移动半页,,ctrl+u
-vim;cursor;,光标移动到非空格符的下一行,+,
-vim;cursor;,光标移动到非空格符的上一行,-,
-vim;cursor;,光标移动到这个屏幕的最上方那一行的第一个字符,H,
-vim;cursor;,光标移动到这个屏幕的中央那一行的第一个字符,M,
-vim;cursor;,光标移动到这个屏幕的最下方那一行的第一个字符,L,
-vim;cursor;,移动到这个档案的最后一行,G,
-vim;cursor;,移动到这个档案的第一行,gg,
-mac;,显示隐藏文件,,cmd+shift+.
+mac;,emoji input method,control+cmd+space,2
+mac;finder;,finder show/hide hidden files,cmd+shift+.,2
+vim;:;,open help for <keyword>,:h,1
+vim;:;,save file as <filename>,:sav,1
+vim;:;,close current pane,:clo,1
+vim;:;,open a terminal window,:ter,1
+vim;:;,open man page for word under the cursor,K,1
+vim;cursor;,move cursor left,h,1
+vim;cursor;,move cursor down,j,1
+vim;cursor;,move cursor up,k,1
+vim;cursor;,move cursor right,l,1
+vim;cursor;,move cursor down (multi-line text),gj,1
+vim;cursor;,move cursor up (multi-line text),gk,1
+vim;cursor;,move to top of screen,H,1
+vim;cursor;,move to middle of screen,M,1
+vim;cursor;,move to bottom of screen,L,1
+vim;cursor;,jump forwards to the start of a word,w,1
+vim;cursor;,jump forwards to the start of a word (words can contain punctuation),W,1
+vim;cursor;,jump forwards to the end of a word,e,1
+vim;cursor;,jump forwards to the end of a word (words can contain punctuation),E,1
+vim;cursor;,jump backwards to the start of a word,b,1
+vim;cursor;,jump backwards to the start of a word (words can contain punctuation),B,1
+vim;cursor;,jump backwards to the end of a word,ge,1
+vim;cursor;,jump backwards to the end of a word (words can contain punctuation),gE,1
+vim;cursor;,"move to matching character (default supported pairs: '()', '{}', '[]' use + in vim for more info)",%,1
+vim;cursor;,jump to the start of the line,0,1
+vim;cursor;,jump to the first non-blank character of the line,^,1
+vim;cursor;,jump to the end of the line,$,1
+vim;cursor;,jump to the last non-blank character of the line,g_,1
+vim;cursor;,go to the first line of the document,gg,1
+vim;cursor;,go to the last line of the document,G,1
+vim;cursor;,go to line <n>; <n>gg or <n>G,,1
+vim;cursor;,move to local declaration,gd,1
+vim;cursor;,move to global declaration,gD,1
+vim;cursor;,jump to next occurrence of character <x>,f,1
+vim;cursor;,jump to before next occurrence of character <x>,t,1
+vim;cursor;,jump to the previous occurrence of character <x>,F,1
+vim;cursor;,jump to after previous occurrence of character <x>,T,1
+vim;cursor;,"repeat previous f, t, F or T movement",;,1
+vim;cursor;,"repeat previous f, t, F or T movement, backwards",1
+vim;cursor;,"jump to next paragraph (or function/block, when editing code)",},1
+vim;cursor;,"jump to previous paragraph (or function/block, when editing code)",{,1
+vim;cursor;,center cursor on screen,zz,1
+vim;cursor;,move screen down one line (without moving cursor),Ctrl + e,2
+vim;cursor;,move screen up one line (without moving cursor),Ctrl + y,2
+vim;cursor;,move back one full screen,Ctrl + b,2
+vim;cursor;,move forward one full screen,Ctrl + f,2
+vim;cursor;,move forward 1/2 a screen,Ctrl + d,2
+vim;cursor;,move back 1/2 a screen,Ctrl + u,2
+vim;insert,insert before the cursor,i,1
+vim;insert,insert at the beginning of the line,I,1
+vim;insert,insert (append) after the cursor,a,1
+vim;insert,insert (append) at the end of the line,A,1
+vim;insert,append (open) a new line below the current line,o,1
+vim;insert,append (open) a new line above the current line,O,1
+vim;insert,insert (append) at the end of the word,ea,1
+vim;insert,delete the character before the cursor during insert mode,Ctrl + h,2
+vim;insert,delete word before the cursor during insert mode,Ctrl + w,2
+vim;insert,begin new line during insert mode,Ctrl + j,2
+vim;insert,indent (move right) line one shiftwidth during insert mode,Ctrl + t,2
+vim;insert,de-indent (move left) line one shiftwidth during insert mode,Ctrl + d,2
+vim;insert,insert (auto-complete) next match before the cursor during insert mode,Ctrl + n,2
+vim;insert,insert (auto-complete) previous match before the cursor during insert mode,Ctrl + p,2
+vim;insert,insert the contents of register <x>,Ctrl + r,2
+vim;insert,Temporarily enter normal mode to issue one normal-mode command,Ctrl + o,2
+vim;insert,exit insert mode,Esc,2
+vim;edit;,replace a single character by <x>; could <n>r；,r,1
+vim;edit;,"replace more than one character, until ESC",R,1
+vim;edit;,join line below to the current one with one space in between,J,1
+vim;edit;,join line below to the current one without space in between,gJ,1
+vim;edit;,reflow paragraph,gwip,1
+vim;edit;,switch case up to motion,g~,1
+vim;edit;,change to lowercase up to motion,gu,1
+vim;edit;,change to uppercase up to motion,gU,1
+vim;edit;,change (replace) entire line,cc,1
+vim;edit;,change (replace) to the end of the line,C,1
+vim;edit;,change (replace) to the end of the line,c$,1
+vim;edit;,change (replace) entire word,ciw,1
+vim;edit;,change (replace) to the end of the word,cw,1
+vim;edit;,delete character and substitute text,s,1
+vim;edit;,delete line and substitute text (same as cc),S,1
+vim;edit;,transpose two letters (delete and paste),xp,1
+vim;edit;,undo,u,1
+vim;edit;,restore (undo) last changed line,U,1
+vim;edit;,redo,Ctrl + r,2
+vim;edit;,repeat last command,.,1
+vim;visual;,"start visual mode, mark lines, then do a command (like y-yank)",v,1
+vim;visual;,start linewise visual mode,V,1
+vim;visual;,move to other end of marked area,o,1
+vim;visual;,start visual block mode,Ctrl + v,2
+vim;visual;,move to other corner of block,O,1
+vim;visual;,mark a word,aw,1
+vim;visual;,a block with (),ab,1
+vim;visual;,a block with {},aB,1
+vim;visual;,a block with <> tags,at,1
+vim;visual;,inner block with (),ib,1
+vim;visual;,inner block with {},iB,1
+vim;visual;,inner block with <> tags,it,1
+vim;visual;,exit visual mode,Esc,2
+vim;visual;,shift text right,>,1
+vim;visual;,shift text left,<,1
+vim;visual;,yank (copy) marked text,y,1
+vim;visual;,delete marked text,d,1
+vim;visual;,switch case,~,1
+vim;visual;,change marked text to lowercase,u,1
+vim;visual;,change marked text to uppercase,U,1
+vim;visual;,yank (copy) a line,yy,1
+vim;visual;,yank (copy) 2 lines,2yy,1
+vim;visual;,yank (copy) the characters of the word from the cursor position to the start of the next word,yw,1
+vim;visual;,yank (copy) word under the cursor,yiw,1
+vim;visual;,yank (copy) word under the cursor and the space after or before it,yaw,1
+vim;visual;,yank (copy) to end of line,y$,1
+vim;visual;,put (paste) the clipboard after cursor,p,1
+vim;visual;,put (paste) before cursor,P,1
+vim;visual;,put (paste) the clipboard after cursor and leave cursor after the new text,gp,1
+vim;visual;,put (paste) before cursor and leave cursor after the new text,gP,1
+vim;visual;,delete (cut) a line,dd,1
+vim;visual;,delete (cut) 2 lines,2dd,1
+vim;visual;,delete (cut) the characters of the word from the cursor position to the start of the next word,dw,1
+vim;visual;,delete (cut) word under the cursor,diw,1
+vim;visual;,delete (cut) word under the cursor and the space after or before it,daw,1
+vim;visual;,delete (cut) to the end of the line,D,1
+vim;visual;,delete (cut) to the end of the line,d$,1
+vim;visual;,delete (cut) character,x,1
+vim;indent;,indent (move right) line one shiftwidth,>>,1
+vim;indent;,de-indent (move left) line one shiftwidth,<<,1
+vim;indent;,indent a block with () or {} (cursor on brace),>%,1
+vim;indent;,indent inner block with (),>ib,1
+vim;indent;,indent a block with <> tags,>at,1
+vim;indent;,re-indent 3 lines,3==,1
+vim;indent;,re-indent a block with () or {} (cursor on brace),=%,1
+vim;indent;,re-indent inner block with {},=iB,1
+vim;indent;,re-indent entire buffer,gg=G,1
+vim;indent;,paste and adjust indent to current line,]p,1
+vim;:;,"write (save) the file, but don't exit",:w,1
+vim;:;,write out the current file using sudo,:w !sudo tee %,1
+vim;:;,write (save) and quit,:wq,1
+vim;:;,quit (fails if there are unsaved changes),:q,1
+vim;:;,quit and throw away unsaved changes,:q!,1
+vim;:;,write (save) and quit on all tabs,:wqa,1
+vim;search;,search for pattern,/pattern,1
+vim;search;,search backward for pattern,?pattern,1
+vim;search;,very magic' pattern: non-alphanumeric characters are interpreted as special regex symbols (no escaping needed),\vpattern,1
+vim;search;,repeat search in same direction,n,1
+vim;search;,repeat search in opposite direction,N,1
+vim;edit;:;,replace all old with new throughout file,:%s/old/new/g,1
+vim;edit;:;,replace all old with new throughout file with confirmations,:%s/old/new/gc,1
+vim;edit;:;,remove highlighting of search matches,:noh,1
+vim;tabs;:;,open a file in a new tab,:tabnew,1
+vim;tabs;,"move the current split window into its own tab;  (manual) press `Ctrl + w`, then input `T`",,1
+vim;tabs;:;,move to the next tab,:tabn,1
+vim;tabs;:;,move to the previous tab,:tabp,1
+vim;tabs;,move to tab number 0,0gt,1
+vim;tabs;:;,move current tab to the <n>th position (indexed from 0),:tabm,1
+vim;tabs;:;,close the current tab and all its windows,:tabc,1
+vim;tabs;:;,close all tabs except for the current one,:tabo,1
