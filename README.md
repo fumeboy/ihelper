@@ -1,8 +1,10 @@
-# 然而我背叛了我自己
+# NOTE: ihelper -> ihelper-raycast
 
 我决定给 raycast（一个类似于 Alfred 的软件） 写插件来实现之前开发输入法所实现的功能。这个项目后面可能不再更新。
 
 插件已经写好在这里 https://github.com/fumeboy/ihelper-raycast
+
+（但我又发现 raycast 限制了 UI 的表达，所以这个项目可能还会更新）
 
 # ihelper
 
